@@ -1,0 +1,25 @@
+create database springwebdb;
+
+use springwebdb;
+
+create table members(
+	id varchar(30) primary key,
+	pw varchar(100),
+	name varchar(100),
+	age varchar(100),
+	addr varchar(300)
+);
+
+create table book(
+	isbn varchar(100) primary key,
+	author varchar(100),
+	title varchar(300),
+	price varchar(1000)
+);
+
+create table files(
+	fid int primary key auto_increment,
+	name varchar(100),
+	path varchar(4000)
+);
+
