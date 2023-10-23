@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
- 	로그인 정보 : ${sessionScope.loginid }
+ 	로그인 정보 : ${sessionScope.userinfo.id }
+ 	<%-- 로그인 정보 : ${userinfo.id } --%>
 </body>
 </html>

@@ -18,11 +18,11 @@ mark.sky {
 <title>Insert title here</title>
 <script type="text/javascript">
 	function del() {
-		document.getElementById("rform").action = "delmember";
+		document.getElementById("rform").action = "${root}/mem/delete";
 		document.getElementById("rform").submit();
 	}
 	function update() {
-		document.getElementById("rform").action = "updatemember";
+		document.getElementById("rform").action = "${root}/mem/update";
 		document.getElementById("rform").submit();
 	}
 </script>
@@ -46,23 +46,23 @@ mark.sky {
 				<h2 class="p-3 mb-3 text-center shadow bg-light"><mark class="sky">회원정보</mark></h2>
 				<div class="form-group" >
 					<label for="id">아이디</label> 
-					<input type="text" class="form-control" value="${id }" name="id" id="id" />
+					<input type="text" class="form-control" value="${mem.id }" name="id" id="id" />
 				</div>
 				<div class="form-group" >
 					<label for="pw">비밀번호</label> 
-					<input type="password" class="form-control" value="${pw }" name="pw" id="pw" />
+					<input type="password" class="form-control" value="${mem.pw }" name="pw" id="pw" />
 				</div>
 				<div class="form-group" >
 					<label for="name">이름</label> 
-					<input type="text" name="name" class="form-control" value="${name }" id="name" />
+					<input type="text" name="name" class="form-control" value="${mem.name }" id="name" />
 				</div>
 				<div class="form-group" >
 					<label for="addr">주소</label> 
-					<input type="text" class="form-control" name="addr" id="addr" value="${addr }"/>
+					<input type="text" class="form-control" name="addr" id="addr" value="${mem.addr }"/>
 				</div>
 				<div class="form-group" >
 					<label for="age">나이</label> 
-					<input type="text" class="form-control" name="age" id="age" value="${age }"/>
+					<input type="text" class="form-control" name="age" id="age" value="${mem.age }"/>
 				</div>
 				<div class="form-group" >
 					<input type="button" class="btn btn-outline-danger" value="삭제" onclick="del()">
