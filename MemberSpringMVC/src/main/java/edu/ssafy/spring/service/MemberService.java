@@ -11,6 +11,7 @@ public interface MemberService {
 	int memberUpdate(MemberDto dto) throws Exception;
 	int memberDelete(MemberDto dto) throws Exception;
 	MemberDto memberLogin(String id, String pw) throws Exception;
-	int idCheck(String id) throws Exception; 
+	int idCheck(String id) throws Exception;
+	MemberDto findById(String id) throws Exception;
 }
 

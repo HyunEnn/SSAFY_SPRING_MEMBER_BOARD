@@ -56,6 +56,11 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return memberRepository.idCheck(id);
 	}
+	
+	@Override
+	public MemberDto findById(String id) throws Exception {
+		return memberRepository.findById(id);
+	}
 
 	
 }

@@ -23,7 +23,7 @@ mark.sky {
 		document.getElementById("pageform").submit();
 	}
 	function dels() {
-		document.getElementById("dels").action = "${root}/mem/update";
+		document.getElementById("dels").action = "${root}/mem/delmembers";
 		document.getElementById("dels").submit();
 	}
 </script>

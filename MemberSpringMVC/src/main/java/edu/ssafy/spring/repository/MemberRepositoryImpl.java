@@ -145,4 +145,26 @@ public class MemberRepositoryImpl implements MemberRepository {
 		return cnt;
 	}
 	
+	@Override
+	public MemberDto findById(String id) throws Exception {
+		MemberDto dto = null;
+		Connection conn = source.getConnection();
+		StringBuilder sb = new StringBuilder();
+		sb.append("select id, pw, name, age, addr");
+		sb.append(" from members where id = ? ");
+		PreparedStatement stmt = conn.prepareStatement(sb.toString());
+		stmt.setString(1, id);
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			dto = new MemberDto();
+			dto.setId(rs.getString("id"));
+			dto.setPw(rs.getString("pw"));
+			dto.setName(rs.getString("name"));
+			dto.setAddr(rs.getString("addr"));
+			dto.setAge(rs.getString("age"));
+		}
+		conn.close();
+		return dto;
+	}
+	
 }
