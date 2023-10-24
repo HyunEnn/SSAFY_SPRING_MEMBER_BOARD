@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-public class CommonInterceptor implements HandlerInterceptor{
+public class CommonInterceptor2 implements HandlerInterceptor{
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -18,14 +18,14 @@ public class CommonInterceptor implements HandlerInterceptor{
 		 * return : true 이면 DS -> Controller 넘어감니다
 		 * 			false 이면 DS -> Controller 안 넘기고 jsp 호출
 		 */
-		System.out.println("commonInterceptor1 PreHandler");
+		System.out.println("commonInterceptor2 PreHandler");
 		return true;
 	}
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		System.out.println("commonInterceptor1 PostHandler");
+		System.out.println("commonInterceptor2 PostHandler");
 		
 	}
 
@@ -33,7 +33,7 @@ public class CommonInterceptor implements HandlerInterceptor{
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("commonInterceptor1 afterCompletion");
+		System.out.println("commonInterceptor2 afterCompletion");
 	}
 	
 }
