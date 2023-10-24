@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import edu.ssafy.spring.dto.BookDto;
@@ -19,8 +21,8 @@ public class BookRepositoryImpl implements BookRepository {
 
 	private DataSource source; // db 연결
 	
+	@Autowired
 	public BookRepositoryImpl(DataSource source) {
-		super();
 		this.source = source;
 	}
 
@@ -48,9 +50,15 @@ public class BookRepositoryImpl implements BookRepository {
 		
 		PreparedStatement stmt = conn.prepareStatement(sb.toString());
 		ResultSet rs = stmt.executeQuery();
-		List<BookDto> list = new ArrayList();
+		List<BookDto> list = new ArrayList<>();
+		BookDto bookDto = null;
 		while(rs.next()) {
-			list.add(new BookDto(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("price")));
+			bookDto = new BookDto();
+			bookDto.setIsbn(rs.getString("isbn"));
+			bookDto.setAuthor(rs.getString("author"));
+			bookDto.setTitle(rs.getString("title"));
+			bookDto.setPrice(rs.getString("price"));
+			list.add(bookDto);
 		}
 		conn.close();
 		return list;
@@ -120,4 +128,33 @@ public class BookRepositoryImpl implements BookRepository {
 		conn.close();
 	}
 
+	@Override
+	public List<BookDto> listBook(Map<String, Integer> map) throws SQLException {
+		int currentPage = (int) map.get("currentPage");
+		int sizePerPage = (int) map.get("sizePerPage");
+		
+		Connection conn = source.getConnection();
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select isbn, author, title, price ");
+		sb.append(" from book ");
+		sb.append(" limit ?, ?" );
+		
+		PreparedStatement stmt = conn.prepareStatement(sb.toString());
+		stmt.setInt(1, currentPage);
+		stmt.setInt(2, sizePerPage);
+		ResultSet rs = stmt.executeQuery();
+		
+		List<BookDto> list = new ArrayList<>();
+		BookDto bookDto = null;
+		while(rs.next()) {
+			bookDto = new BookDto();
+			bookDto.setIsbn(rs.getString("isbn"));
+			bookDto.setAuthor(rs.getString("author"));
+			bookDto.setTitle(rs.getString("title"));
+			bookDto.setPrice(rs.getString("price"));
+			list.add(bookDto);
+		}
+		conn.close();
+		return list;
+	}
 }

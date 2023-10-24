@@ -1,18 +1,15 @@
 package edu.ssafy.spring.dto;
 
+import java.util.List;
+
+
 public class BookDto {
 
 	private String isbn;
 	private String author;
 	private String title;
 	private String price;
-	public BookDto(String isbn, String author, String title, String price) {
-		super();
-		this.isbn = isbn;
-		this.author = author;
-		this.title = title;
-		this.price = price;
-	}
+	private List<FileDto> fileInfos;
 	
 	public BookDto() {
 		super();
@@ -45,6 +42,14 @@ public class BookDto {
 	}
 	public void setPrice(String price) {
 		this.price = price;
+	}
+
+	public List<FileDto> getFileInfos() {
+		return fileInfos;
+	}
+
+	public void setFileInfos(List<FileDto> fileInfos) {
+		this.fileInfos = fileInfos;
 	}
 
 }

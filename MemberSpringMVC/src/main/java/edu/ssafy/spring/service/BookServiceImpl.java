@@ -2,6 +2,7 @@ package edu.ssafy.spring.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,12 @@ public class BookServiceImpl implements BookRepository {
 	@Override
 	public void deleteBook(BookDto bookDto) throws SQLException {
 		bookRepository.deleteBook(bookDto);
+	}
+	
+	@Override
+	public List<BookDto> listBook(Map<String, Integer> map) throws SQLException {
+		// TODO Auto-generated method stub
+		return bookRepository.listBook(map);
 	}
 
 }
