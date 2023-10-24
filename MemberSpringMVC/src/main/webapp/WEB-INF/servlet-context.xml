@@ -24,6 +24,31 @@
 	
 	<context:component-scan base-package="edu.ssafy.spring" />
 	
-	
-	
+	<!-- file upload Multipart resolver -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="5232880"></beans:property>
+		<beans:property name="defaultEncoding" value="utf-8"></beans:property>
+	</beans:bean>
+	<!-- fileDownload -->
+	<beans:bean id="filedownload" class="edu.ssafy.spring.util.FileDownload"></beans:bean>
+	<beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<beans:property name="order" value="0"></beans:property>
+	</beans:bean>
 </beans:beans>
+<beans:bean id="commonInterceptor" class="edu.ssafy.spring.util.CommonInterceptor"></beans:bean>
+<interceptors>
+	<interceptor>
+		<mapping path="/**" />
+		<exclude-mapping path="/mem/list"/>
+		<!-- <beans:ref bean="commonInterceptor" /> -->
+		<beans:bean
+			class="edu.ssafy.spring.util.CommonInterceptor"/>
+	</interceptor>
+	<interceptor>
+		<mapping path="/**" />
+		<exclude-mapping path="/mem/list"/>
+		<!-- <beans:ref bean="commonInterceptor" /> -->
+		<beans:bean
+			class="edu.ssafy.spring.util.CommonInterceptor2"/>
+	</interceptor>
+</interceptors>

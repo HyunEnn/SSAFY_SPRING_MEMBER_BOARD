@@ -18,6 +18,7 @@
 		<a href="${root }/mem/login">로그인</a>
 		<a href="${root }/mem/logout">로그아웃</a>
 		<a href="${root }/mem/list">회원리스트</a>
+		<a href="${root }/filelist">파일업/다운로드</a>
 	</div>
 </body>
 </html>
