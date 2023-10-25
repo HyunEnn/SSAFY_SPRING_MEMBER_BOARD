@@ -2,6 +2,7 @@ package edu.ssafy.spring.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,18 +17,25 @@ import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+
 
 import edu.ssafy.spring.dto.FileDto;
 
 @Controller
 public class FileController {
-	@Autowired
+//	@Autowired
 	private ServletContext servletContext;
 	@Autowired
 	private DataSource source;
@@ -73,7 +81,7 @@ public class FileController {
 			sql.append( "values(?,?) ");
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1, originalFilename);
-			pstmt.setString(2, folder.toString()+File.separator+originalFilename);
+			pstmt.setString(2, folder.toString());
 			pstmt.executeUpdate();
 			
 			mfile.transferTo(new File(folder,originalFilename));
@@ -84,27 +92,45 @@ public class FileController {
 		
 		return "redirect:/filelist";
 	}
-	
 	@GetMapping("filedownload")
-	public ModelAndView fileDownLoad(ModelAndView mav, @RequestParam("fid") String fid) throws SQLException {
+	public ModelAndView fileDownLoad(ModelAndView mav, @RequestParam("fid") String fid ) throws SQLException {
 		Connection conn = source.getConnection();
 		StringBuilder sql = new StringBuilder();
-		sql.append( "select fid, name, path from files " );
+		sql.append( " select fid, name, path from files " );
 		sql.append(" where fid = ? ");
 		PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 		pstmt.setString(1, fid);
+		
 		ResultSet rs = pstmt.executeQuery();
 		FileDto dto = null;
-		while(rs.next()) {
+		if(rs.next()) {
 			dto = new FileDto(rs.getString("fid"), rs.getString("name"), rs.getString("path"));
 		}
 		conn.close();
 		System.out.println(dto);
-		File file = new File(dto.getPath());
+		File file = new File(dto.getPath()+File.separator+dto.getName());
 		mav.addObject("downloadFile",file);
 		mav.setViewName("filedownload");
 		
 		return mav;
 	}
-	                  
+//	@GetMapping("showimg")
+//	@ResponseBody
+//	public ResponseEntity<byte[]> showImg(String filename) {
+//		
+//		String realPath = servletContext.getRealPath("/upload/20231025");
+//		File file=new File(realPath,filename);
+//	    System.out.println(file);
+//		//System.out.println(realPath);
+//		
+//		ResponseEntity<byte[]> result=null;
+//	    try {
+//	        HttpHeaders headers=new HttpHeaders();
+//	        headers.add("Content-Type", Files.probeContentType(file.toPath()));
+//	        result=new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),headers,HttpStatus.OK );
+//	    }catch (IOException e) {
+//	        e.printStackTrace();
+//	    }
+//	    return result;
+//	}
 }

@@ -1,10 +1,11 @@
-package edu.ssafy.spring.repository;
+package edu.ssafy.spring.reporitory;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 import edu.ssafy.spring.dto.BookDto;
+import edu.ssafy.spring.util.PageNavigation;
 
 public interface BookRepository {
 
@@ -16,4 +17,5 @@ public interface BookRepository {
 	
 	void modifyBook(BookDto bookDto) throws SQLException; // 책 수정
 	void deleteBook(BookDto bookDto) throws SQLException; // 책 삭제
+	BookDto viewBook(BookDto bookDto) throws SQLException;
 }

@@ -1,4 +1,4 @@
-package edu.ssafy.spring.repository;
+package edu.ssafy.spring.reporitory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

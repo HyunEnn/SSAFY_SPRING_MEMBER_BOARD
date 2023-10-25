@@ -36,6 +36,10 @@ public class FileDto {
 		this.name = name;
 		this.path = path;
 	}
+
+	public FileDto() {
+		super();
+	}
 	
 	
 }

@@ -9,6 +9,7 @@ public class BookDto {
 	private String author;
 	private String title;
 	private String price;
+	private String img;
 	private List<FileDto> fileInfos;
 	
 	public BookDto() {
@@ -42,6 +43,14 @@ public class BookDto {
 	}
 	public void setPrice(String price) {
 		this.price = price;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	public List<FileDto> getFileInfos() {

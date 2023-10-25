@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.ssafy.spring.dto.BookDto;
-import edu.ssafy.spring.repository.BookRepository;
+import edu.ssafy.spring.reporitory.BookRepository;
+import edu.ssafy.spring.util.PageNavigation;
 
 @Service
-public class BookServiceImpl implements BookRepository {
+public class BookServiceImpl implements BookService {
 	
 	@Autowired
 	private BookRepository bookRepository;
@@ -56,6 +57,24 @@ public class BookServiceImpl implements BookRepository {
 	public List<BookDto> listBook(Map<String, Integer> map) throws SQLException {
 		// TODO Auto-generated method stub
 		return bookRepository.listBook(map);
+	}
+	
+	@Override
+	public BookDto viewBook(BookDto bookDto) throws SQLException {
+		BookDto viewBook = bookRepository.viewBook(bookDto);
+		return viewBook;
+	}
+	
+	@Override
+	public boolean bookDeletes(String[] id) throws Exception {
+		
+		return false;
+	}
+	
+	@Override
+	public PageNavigation makePageNavigation(int currentPage, int sizePerPage) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

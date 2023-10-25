@@ -1,4 +1,4 @@
-package edu.ssafy.spring.repository;
+package edu.ssafy.spring.reporitory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import edu.ssafy.spring.dto.BookDto;
 import edu.ssafy.spring.dto.MemberDto;
+import edu.ssafy.spring.util.PageNavigation;
 
 @Repository
 public class BookRepositoryImpl implements BookRepository {
@@ -30,13 +31,14 @@ public class BookRepositoryImpl implements BookRepository {
 	public void writeArticle(BookDto bookDto) throws SQLException {
 		Connection conn = source.getConnection();
 		StringBuilder sb = new StringBuilder();
-		sb.append(" insert into book(isbn, author, title, price) ");
-		sb.append(" values(?,?,?,?) ");
+		sb.append(" insert into book(isbn, author, title, price, img) ");
+		sb.append(" values(?,?,?,?,?) ");
 		PreparedStatement stmt = conn.prepareStatement(sb.toString());
 		stmt.setString(1, bookDto.getIsbn());
 		stmt.setString(2, bookDto.getAuthor());
 		stmt.setString(3, bookDto.getTitle());
 		stmt.setString(4, bookDto.getPrice());
+		stmt.setString(5, bookDto.getPrice());
 		stmt.executeUpdate();
 		conn.close();
 	}
@@ -45,8 +47,8 @@ public class BookRepositoryImpl implements BookRepository {
 	public List<BookDto> listBook() throws SQLException {
 		Connection conn = source.getConnection();
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select isbn, author, title, price ");
-		sb.append(" from members ");
+		sb.append(" select isbn, author, title, price, img ");
+		sb.append(" from book ");
 		
 		PreparedStatement stmt = conn.prepareStatement(sb.toString());
 		ResultSet rs = stmt.executeQuery();
@@ -58,6 +60,7 @@ public class BookRepositoryImpl implements BookRepository {
 			bookDto.setAuthor(rs.getString("author"));
 			bookDto.setTitle(rs.getString("title"));
 			bookDto.setPrice(rs.getString("price"));
+			bookDto.setImg(rs.getString("img"));
 			list.add(bookDto);
 		}
 		conn.close();
@@ -135,7 +138,7 @@ public class BookRepositoryImpl implements BookRepository {
 		
 		Connection conn = source.getConnection();
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select isbn, author, title, price ");
+		sb.append(" select isbn, author, title, price, img ");
 		sb.append(" from book ");
 		sb.append(" limit ?, ?" );
 		
@@ -152,9 +155,34 @@ public class BookRepositoryImpl implements BookRepository {
 			bookDto.setAuthor(rs.getString("author"));
 			bookDto.setTitle(rs.getString("title"));
 			bookDto.setPrice(rs.getString("price"));
+			bookDto.setImg(rs.getString("img"));
 			list.add(bookDto);
 		}
 		conn.close();
 		return list;
+	}
+	
+	@Override
+	public BookDto viewBook(BookDto bookDto) throws SQLException {
+		Connection conn = source.getConnection();
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select * ");
+		sb.append(" from book ");
+		sb.append(" where isbn = ? ");
+		PreparedStatement stmt = conn.prepareStatement(sb.toString());
+		stmt.setString(1, bookDto.getIsbn());
+		ResultSet rs = stmt.executeQuery();
+		BookDto book = null;
+		
+		if(rs.next()) {
+			book = new BookDto();
+			book.setIsbn(rs.getString("isbn"));
+			book.setAuthor(rs.getString("author"));
+			book.setTitle(rs.getString("title"));
+			book.setPrice(rs.getString("price"));
+			book.setImg(rs.getString("img"));
+		}
+		conn.close();
+		return book;
 	}
 }

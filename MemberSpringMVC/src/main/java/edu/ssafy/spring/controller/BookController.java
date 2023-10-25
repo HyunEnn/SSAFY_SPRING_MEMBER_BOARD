@@ -1,6 +1,5 @@
 package edu.ssafy.spring.controller;
 
-import java.io.File;
 import java.io.*;
 import java.util.*;
 import java.sql.SQLException;
@@ -21,37 +20,83 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.ssafy.spring.dto.BookDto;
 import edu.ssafy.spring.dto.FileDto;
 import edu.ssafy.spring.service.BookService;
 import edu.ssafy.spring.service.BookServiceImpl;
+import edu.ssafy.spring.util.PageNavigation;
+import edu.ssafy.spring.util.PaggingUtil;
 
 @Controller
 @RequestMapping("/book")
 public class BookController {
 	
 	private final Logger logger = LoggerFactory.getLogger(BookController.class);
-	
+	@Autowired
 	private ServletContext servletContext;
-	private BookServiceImpl bookService;
+	private BookService bookService;
 	
-	public BookController(BookServiceImpl bookServiceImpl) {
+	@Autowired
+	public BookController(BookService bookService) {
 		super();
-		bookService = bookServiceImpl;
+		this.bookService = bookService;
 	}
+	
+	@GetMapping
+	public String index() {
+		return "book/bookmanage";
+	}
+	
+	@GetMapping("/insert")
+	public String BookInsert() {
+		return "book/bookinsert";
+	}
+	
+	@PostMapping("/insert")
+	public String InsertBook(@RequestParam("upfile") MultipartFile upfile, BookDto bookDto) throws IllegalStateException, IOException, SQLException {
+		String path = servletContext.getContextPath();
+		String realPath= "c:/upload";
+		String saveFolder = realPath + File.separator;
+
+		File folder = new File(saveFolder);
+
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+
+		String originalFilename = upfile.getOriginalFilename();
+		
+		upfile.transferTo(new File(folder, originalFilename));
+		
+		bookDto.setImg(path + "/image/" + originalFilename);
+		bookService.writeArticle(bookDto);
+		return "redirect:/book/list";
+	}
+	
 
 	@GetMapping("/list")
-	public String list(@RequestParam Map<String, Integer> map, Model model) throws SQLException {
-		List<BookDto> list = bookService.listBook(map);
-//		PageNavigation pageNavigation = bookService
-		model.addAttribute("books", list);
-		model.addAttribute("pgno", map.get("pgno"));
-		model.addAttribute("key", map.get("key"));
-		model.addAttribute("word", map.get("word"));
-		return "book/list";
-	}
+	public ModelAndView BookList(String pg, String spp, ModelAndView mav) {
+		int currentPage = pg == null ? 1 : Integer.parseInt(pg);
+		currentPage = currentPage == 0 ? 1 : currentPage;
+		int sizePerPage = spp == null ? PaggingUtil.sizePerPage : Integer.parseInt(spp);
+		try {
+			Map<String,Integer>map = new HashMap();
+			map.put("currentPage", (currentPage-1)*sizePerPage);
+			map.put("sizePerPage", sizePerPage);
+			List<BookDto> list = bookService.listBook(map);
+			PageNavigation pageNavigation = bookService.makePageNavigation(currentPage, sizePerPage);
+			mav.addObject("navigation", pageNavigation);
+			mav.addObject("booklist",list);
+			mav.setViewName("book/booklist");
+		} catch (Exception e) {
+			e.printStackTrace();
+			mav.setViewName("error/error");
+		}
+		return mav;
+	};
 	
 	@GetMapping("/write")
 	public String writeBook(@RequestParam Map<String, String> map, Model model) {

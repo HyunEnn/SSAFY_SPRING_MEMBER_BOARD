@@ -145,6 +145,7 @@ public class MemberController {
 	public ModelAndView login(MemberDto dto, ModelAndView mv, HttpServletRequest req) throws Exception {
 		try {
 			boolean login = service.login(dto);
+			System.out.println(login);
 			if (login) {
 				req.getSession().setAttribute("loginid", dto.getId());
 				mv.setViewName("index");

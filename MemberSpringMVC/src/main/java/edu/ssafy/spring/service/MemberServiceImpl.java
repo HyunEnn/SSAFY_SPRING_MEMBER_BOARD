@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import edu.ssafy.spring.util.PaggingUtil;
 import edu.ssafy.spring.dto.MemberDto;
-import edu.ssafy.spring.repository.MemberRepository;
+import edu.ssafy.spring.reporitory.MemberRepository;
 import edu.ssafy.spring.util.PageNavigation;
 
 
@@ -18,7 +19,7 @@ public class MemberServiceImpl implements MemberService{
 	private MemberRepository repo;
 	
 	@Autowired
-	public MemberServiceImpl(MemberRepository repo) {
+	public MemberServiceImpl(@Qualifier("MemberRepositoryMybatis") MemberRepository repo) {
 		this.repo = repo;
 	}
 	

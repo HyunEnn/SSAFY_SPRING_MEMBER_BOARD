@@ -14,8 +14,7 @@
 		<h1>Index.jsp</h1>
 		<a href="${root }/hello?name=홍길동">hello</a>
 		<a href="${root }/param">parameter</a>
-		<a href="${root }/book/list">책 목록</a>
-		<a href="${root }/book/write">책 등록</a>
+		<a href="${root }/book">도서 관리</a>
 		<a href="${root }/mem/insert">회원등록</a>
 		<a href="${root }/mem/login">로그인</a>
 		<a href="${root }/mem/logout">로그아웃</a>

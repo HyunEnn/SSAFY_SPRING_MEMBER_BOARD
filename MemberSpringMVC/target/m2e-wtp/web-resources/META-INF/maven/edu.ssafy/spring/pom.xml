@@ -21,7 +21,7 @@
 
 		<mysql-connector-java-version>8.0.33</mysql-connector-java-version>
 		<mybatis-version>3.5.13</mybatis-version>
-		<mybatis-spring-version>3.0.2</mybatis-spring-version>
+		<mybatis-spring-version>2.0.6</mybatis-spring-version>
 
 		<servlet-version>4.0.1</servlet-version>
 		<jsp-version>2.3.3</jsp-version>

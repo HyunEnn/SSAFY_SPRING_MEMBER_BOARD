@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.ssafy.spring.dto.BookDto;
+import edu.ssafy.spring.util.PageNavigation;
 
 public interface BookService {
 
@@ -16,4 +17,8 @@ public interface BookService {
 	
 	void modifyBook(BookDto bookDto) throws SQLException; // 책 수정
 	void deleteBook(BookDto bookDto) throws SQLException; // 책 삭제
+	BookDto viewBook(BookDto bookDto) throws SQLException;
+	boolean bookDeletes(String[] id)  throws Exception;
+	PageNavigation makePageNavigation(int currentPage, int sizePerPage)  throws Exception;
+	
 }

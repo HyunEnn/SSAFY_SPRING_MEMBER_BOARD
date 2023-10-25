@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원 조회</title>
+<title>도서 리스트</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -19,26 +19,24 @@ mark.sky {
 <script type="text/javascript">
 	function pageMove(pg) {
 		document.getElementById("pg").value = pg;
-		document.getElementById("pageform").action = "${root}/mem/list";
+		document.getElementById("pageform").action = "${root}/book/list";
 		document.getElementById("pageform").submit();
 	}
 	function dels() {
-		document.getElementById("dels").action = "${root}/mem/deletes";
+		document.getElementById("dels").action = "${root}/book/deletes";
 		document.getElementById("dels").submit();
 	}
 </script>
 </head>
 <body>
-
 	<div class="container text-center mt-3">
 		<div class="col-lg-8 mx-auto">
-			<jsp:include page="/WEB-INF/views/member/loginheader.jsp"></jsp:include>
 			<form name="pageform" id="pageform" method="get" action="">
 				<input type="hidden" name="pg" id="pg" value="">
 			</form>
 
 			<h2 class="p-3 mb-3 shadow bg-light">
-				<mark class="sky">회원조회</mark>
+				<mark class="sky">도서 조회</mark>
 				<button type="button" class="btn btn-danger " onclick="dels()">선택삭제</button>
 			</h2>
 			
@@ -46,24 +44,24 @@ mark.sky {
 				<table class="table table-active text-left" border="1">
 					<tr class="table-info">
 						<td>번호</td>
-						<td>id</td>
-						<td>pw</td>
-						<td>name</td>
-						<td>addr</td>
-						<td>age</td>
+						<td>ISBN</td>
+						<td>작가</td>
+						<td>제목</td>
+						<td>가격</td>
+						<td>도서 이미지</td>
 						<td>선택</td>
 					</tr>
 
-					<c:forEach items="${list }" var="m" varStatus="cnt">
+					<c:forEach items="${booklist }" var="m" varStatus="cnt">
 						<tr class="table-danger">
 							<td>${cnt.count }</td>
 							<td><a
-								href="${root }/mem/view?id=${m.id }">${m.id }</a></td>
-							<td>${m.pw }</td>
-							<td>${m.name }</td>
-							<td>${m.addr }</td>
-							<td>${m.age }</td>
-							<td><input type="checkbox" name="id" value="${m.id }"></td>
+								href="${root }/book/view?isbn=${m.isbn }">${m.isbn }</a></td>
+							<td>${m.author }</td>
+							<td>${m.title }</td>
+							<td>${m.price }</td>
+							<td><img src="http://localhost:8080${m.img }" alt="error" /></td>
+							<td><input type="checkbox" name="isbn" value="${m.isbn }"></td>
 						</tr>
 
 					</c:forEach>

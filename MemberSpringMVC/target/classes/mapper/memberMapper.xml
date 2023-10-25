@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="edu.ssafy.spring.reporitory.MemberRepository">
+  <!-- <select id="selectBlog" resultType="Blog">
+    select * from Blog where id = #{id}
+  </select> -->
+  <insert id="memberInsert" parameterType="memdto">
+  	insert into members(id, pw, name, age, addr) 
+  	values(#{id},#{pw},#{name},#{age},#{addr})
+  </insert>
+  <select id="memberList" resultType="memdto">
+  	select id, pw, name, age, addr from members
+  </select>
+  <select id="memberListPage" parameterType="map" resultType="memdto">
+  	select id, pw, name, age, addr 
+   		from members 
+    	limit #{currentPage}, #{sizePerPage}
+  </select>
+  <select id="memberCnt" resultType="int">
+  	select count(*) as cnt from members;
+  </select>
+  <select id="memberView" parameterType="memdto" resultType="memdto">
+  	select id, pw, name, age, addr
+  	from members
+  	where id = #{id}
+  </select>
+  <update id="memberUpdate" parameterType="memdto">
+  	update members set pw = #{pw}, name = #{name}, age= #{age}, addr= #{addr}
+  	where id = #{id}
+  </update>
+  <delete id="memberDelete" parameterType="memdto">
+  	delete from members
+  	where id = #{id}
+  </delete>
+  <select id="memberLogin" parameterType="memdto" resultType="memdto">
+  	select id, pw, name, age, addr
+  	from members
+  	where id = #{id} and pw = #{pw}
+  </select>
+  
+  <select id="test1" resultType="memdto">
+  	select id, pw, name, age, addr from members
+  </select>
+  
+  <select id="dynamictest1" parameterType="map" resultType="memdto">
+  	select id, pw, name, age, addr from members
+  	<where>
+  		id = #{id}
+  	</where>
+  </select>
+</mapper>
