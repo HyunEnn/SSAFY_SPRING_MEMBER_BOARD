@@ -24,8 +24,7 @@ public class MemberRepositoryMybatisImpl implements MemberRepository{
 	@Override
 	public int memberInsert(MemberDto dto) throws Exception {
 		// TODO Auto-generated method stub
-		session.insert(ns+"memberInsert",dto);
-		return 0;
+		return session.insert(ns+"memberInsert",dto);
 	}
 
 	@Override

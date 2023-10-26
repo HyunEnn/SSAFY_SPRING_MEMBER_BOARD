@@ -21,7 +21,7 @@
     	limit #{currentPage}, #{sizePerPage}
   </select>
   <select id="memberCnt" resultType="int">
-  	select count(*) as cnt from members;
+  	select count(*) as cnt from members
   </select>
   <select id="memberView" parameterType="memdto" resultType="memdto">
   	select id, pw, name, age, addr
@@ -36,7 +36,7 @@
   	delete from members
   	where id = #{id}
   </delete>
-  <select id="memberLogin" parameterType="memdto" resultType="memdto">
+  <select id="login" parameterType="memdto" resultType="memdto">
   	select id, pw, name, age, addr
   	from members
   	where id = #{id} and pw = #{pw}

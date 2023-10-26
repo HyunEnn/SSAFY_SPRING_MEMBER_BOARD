@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,8 +27,9 @@ import edu.ssafy.spring.util.PaggingUtil;
 public class MemberController {
 	
 	private MemberService service;
+	
 	@Autowired
-	public MemberController(MemberService service) {
+	public MemberController(@Qualifier("MemberServiceMapperImpl") MemberService service) {
 		this.service = service;
 	}
 	
@@ -146,6 +148,8 @@ public class MemberController {
 		try {
 			boolean login = service.login(dto);
 			System.out.println(login);
+			System.out.println("------");
+			System.out.println("------");
 			if (login) {
 				req.getSession().setAttribute("loginid", dto.getId());
 				mv.setViewName("index");
