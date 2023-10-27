@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -98,53 +99,38 @@ public class BookController {
 		return mav;
 	};
 	
-	@GetMapping("/write")
-	public String writeBook(@RequestParam Map<String, String> map, Model model) {
-		logger.debug("what is : ?" , map);
-		model.addAttribute("pgno", map.get("pgno"));
-		model.addAttribute("key", map.get("key"));
-		model.addAttribute("word", map.get("word"));
-		return "book/write";
+	@GetMapping("/view")
+	public String BookView(@RequestParam String isbn, Model model) throws SQLException {
+		BookDto findBook = bookService.getTitle(isbn);
+		System.out.println(findBook);
+		model.addAttribute("book", findBook);
+		return "book/viewbook";
 	}
 	
-	@PostMapping("/write")
-	// get으로 돌려받을 필요 없고, write.jsp에서 지정해준 값들을 bookDto에서 그대로 받은 후, service단으로 전송
-	public String write(BookDto bookDto, @RequestParam("upfile") MultipartFile[] files,
-			RedirectAttributes redirectAttributes) throws IllegalStateException, IOException, SQLException {
-		
-//		FileUpload 관련 설정.
-		logger.debug("MultipartFile.isEmpty : {}", files[0].isEmpty());
-		if (!files[0].isEmpty()) {
-			String realPath = servletContext.getRealPath("/upload");
-//			String realPath = servletContext.getRealPath("/resources/img");
-			String today = new SimpleDateFormat("yyMMdd").format(new Date());
-			String saveFolder = realPath + File.separator + today; // 어디로 파일이 저장될지 지정
-			logger.debug("저장 폴더 : {}", saveFolder);
-			File folder = new File(saveFolder);
-			if (!folder.exists())
-				folder.mkdirs(); // 폴더 생성
-			List<FileDto> fileInfos = new ArrayList<FileDto>();
-			for (MultipartFile mfile : files) {
-				FileDto fileInfoDto = new FileDto(); 
-				String originalFileName = mfile.getOriginalFilename();
-				if (!originalFileName.isEmpty()) { // 원래 이름
-					String saveFileName = UUID.randomUUID().toString()
-							+ originalFileName.substring(originalFileName.lastIndexOf('.'));
-					fileInfoDto.setFid(today);
-					fileInfoDto.setName(originalFileName);
-					logger.debug("원본 파일 이름 : {}, 실제 저장 파일 이름 : {}", mfile.getOriginalFilename(), saveFileName);
-					mfile.transferTo(new File(folder, saveFileName));
-				}
-				fileInfos.add(fileInfoDto);
-			}
-			bookDto.setFileInfos(fileInfos);
-		}
-		bookService.writeArticle(bookDto);
-		redirectAttributes.addAttribute("pgno", "1");
-		redirectAttributes.addAttribute("key", "");
-		redirectAttributes.addAttribute("word", "");
+	@PostMapping("/update")
+	public String BookUpdate(@ModelAttribute("book") BookDto bookDto) throws SQLException {
+		bookService.modifyBook(bookDto);
 		return "redirect:/book/list";
 	}
+	
+	@PostMapping("/delete")
+	public String BookDelete(BookDto bookDto) throws SQLException {
+		bookService.deleteBook(bookDto);
+		return "redirect:/book/list";
+	}
+	
+	@PostMapping("/deletes")
+	public String BookDeletes(String[] isbn) throws Exception {
+		try {
+			bookService.bookDeletes(isbn);
+			return "redirect:/book/list";			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return "error/error";
+		}
+	}
+	
 	
 	
 }

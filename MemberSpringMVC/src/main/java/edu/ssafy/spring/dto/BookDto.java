@@ -15,11 +15,13 @@ public class BookDto {
 	public BookDto() {
 		super();
 	}
-
+	
 	@Override
 	public String toString() {
-		return "BookDto [isbn=" + isbn + ", author=" + author + ", title=" + title + ", price=" + price + "]";
+		return "BookDto [isbn=" + isbn + ", author=" + author + ", title=" + title + ", price=" + price + ", img=" + img
+				+ "]";
 	}
+
 	public String getIsbn() {
 		return isbn;
 	}

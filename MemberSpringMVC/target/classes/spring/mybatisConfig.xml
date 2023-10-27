@@ -5,9 +5,11 @@
 <configuration>
 <typeAliases>
 	<typeAlias type="edu.ssafy.spring.dto.MemberDto" alias="memdto"/>
+	<typeAlias type="edu.ssafy.spring.dto.BookDto" alias="bookdto"/>
 </typeAliases>
   
   <mappers>
     <mapper resource="mapper/memberMapper.xml"/>
+    <mapper resource="mapper/bookMapper.xml"/> 
   </mappers>
 </configuration>

@@ -49,8 +49,8 @@ mark.sky {
 					<input readonly type="text" class="form-control" value="${book.isbn }" name="isbn" id="isbn" />
 				</div>
 				<div class="form-group" >
-					<label for="publisher">작가</label> 
-					<input type="text" class="form-control" value="${book.publisher }" name="publisher" id="publisher" />
+					<label for="author">작가</label> 
+					<input type="text" class="form-control" value="${book.author }" name="author" id="author" />
 				</div>
 				<div class="form-group" >
 					<label for="title">제목</label> 

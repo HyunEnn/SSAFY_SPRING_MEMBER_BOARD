@@ -3,21 +3,23 @@ package edu.ssafy.spring.service;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import edu.ssafy.spring.dto.BookDto;
+import edu.ssafy.spring.dto.MemberDto;
 import edu.ssafy.spring.reporitory.BookRepository;
 import edu.ssafy.spring.util.PageNavigation;
+import edu.ssafy.spring.util.PaggingUtil;
 
 @Service
 public class BookServiceImpl implements BookService {
 	
-	@Autowired
 	private BookRepository bookRepository;
 	
-	public BookServiceImpl(BookRepository bookRepository) {
+	@Autowired
+	public BookServiceImpl(@Qualifier("BookRepositoryMybatis") BookRepository bookRepository) {
 		super();
 		this.bookRepository = bookRepository;
 	}
@@ -66,15 +68,29 @@ public class BookServiceImpl implements BookService {
 	}
 	
 	@Override
-	public boolean bookDeletes(String[] id) throws Exception {
-		
-		return false;
+	public boolean bookDeletes(String[] isbns) throws Exception {
+		BookDto dto = new BookDto();
+		System.out.println("나 들어왔어요");
+		for (String isbn : isbns) {
+			System.out.println(isbn);
+			dto.setIsbn(isbn);
+			bookRepository.deleteBook(dto);
+		}
+		return true;
 	}
 	
 	@Override
 	public PageNavigation makePageNavigation(int currentPage, int sizePerPage) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		int naviSize = PaggingUtil.naviSize;
+		PageNavigation pageNavigation = new PageNavigation();
+		pageNavigation.setCurrentPage(currentPage);
+		pageNavigation.setNaviSize(naviSize);
+		int totalSize = bookRepository.getTotalBookCount();
+		//pageNavigation.setTotalCount(totalSize);
+		int totalPageSize = (totalSize - 1)/sizePerPage + 1;
+		pageNavigation.setTotalPageCount(totalPageSize);
+		pageNavigation.makeNavigator();
+		return pageNavigation;
 	}
 
 }

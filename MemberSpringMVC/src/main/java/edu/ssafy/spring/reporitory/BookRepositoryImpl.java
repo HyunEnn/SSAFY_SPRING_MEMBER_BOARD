@@ -86,7 +86,7 @@ public class BookRepositoryImpl implements BookRepository {
 	public BookDto getTitle(String isbn) throws SQLException {
 		Connection conn = source.getConnection();
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select isbn, author, title, price");
+		sb.append(" select isbn, author, title, price, img");
 		sb.append(" from book ");
 		sb.append(" where isbn = ? ");
 		PreparedStatement stmt = conn.prepareStatement(sb.toString());
@@ -99,6 +99,7 @@ public class BookRepositoryImpl implements BookRepository {
 			mem.setAuthor(rs.getString("author"));
 			mem.setTitle(rs.getString("title"));
 			mem.setPrice(rs.getString("price"));
+			mem.setImg(rs.getString("img"));
 		}
 		conn.close();
 		return mem;
@@ -108,13 +109,14 @@ public class BookRepositoryImpl implements BookRepository {
 	public void modifyBook(BookDto bookDto) throws SQLException {
 		Connection conn = source.getConnection();
 		StringBuilder sb = new StringBuilder();
-		sb.append(" update book set isbn = ?, author = ?, title = ?, price = ? ");
+		sb.append(" update book set author = ?, title = ?, price = ?, img = ? ");
 		sb.append(" where isbn = ?  ");
 		PreparedStatement stmt = conn.prepareStatement(sb.toString());
-		stmt.setString(1, bookDto.getIsbn());
-		stmt.setString(2, bookDto.getAuthor());
-		stmt.setString(3, bookDto.getTitle());
-		stmt.setString(4, bookDto.getPrice());
+		stmt.setString(1, bookDto.getAuthor());
+		stmt.setString(2, bookDto.getTitle());
+		stmt.setString(3, bookDto.getPrice());
+		stmt.setString(4, bookDto.getImg());
+		stmt.setString(5, bookDto.getIsbn());
 		stmt.executeUpdate();
 		conn.close();
 	}

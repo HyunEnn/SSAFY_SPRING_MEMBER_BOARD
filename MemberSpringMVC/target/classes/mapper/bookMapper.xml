@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="edu.ssafy.spring.reporitory.BookRepository">
+  <!-- <select id="selectBlog" resultType="Blog">
+    select * from Blog where id = #{id}
+  </select> -->
+  <insert id="writeArticle" parameterType="bookdto">
+  	insert into book(isbn, author, title, price, img)
+  	values (#{isbn}, #{author}, #{title}, #{price}, #{img})
+  </insert>
+  <select id="listBook" resultType="bookdto">
+  	select isbn, author, title, price, img 
+  	from book
+  </select>
+  <select id="listBookPage" resultType="bookdto" parameterType="map">
+  	select isbn, author, title, price, img
+	from book
+	limit #{currentPage}, #{sizePerPage}
+  </select>
+  <select id="getTotalBookCount" resultType="int">
+  	select count(isbn) as cnt
+  	from book
+  </select>
+  <select id="getTitle" resultType="bookdto">
+  	select isbn, author, title, price, img
+  	from book
+  	where isbn = #{isbn}
+  </select>
+  <update id="modifyBook" parameterType="bookdto">
+  	update book set author = #{author}, title = #{title}, price = #{price}, img = #{img}
+  	where isbn = #{isbn}
+  </update>
+  <delete id="deleteBook" parameterType="bookdto">
+  	delete from book
+  	where isbn = #{isbn}
+  </delete>
+  <select id="viewBook" parameterType="bookdto" resultType="bookdto">
+  	select isbn, author, title, price, img
+  	from book
+  	where isbn = #{isbn}
+  </select>
+  
+  
+</mapper>
