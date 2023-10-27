@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.ssafy.spring.dto.MemberDto;
 import edu.ssafy.spring.reporitory.MemberRepository;
@@ -13,17 +14,22 @@ import edu.ssafy.spring.util.PageNavigation;
 import edu.ssafy.spring.util.PaggingUtil;
 
 @Service("MemberServiceMapperImpl")
-public class MemberServiceMapperImpl implements MemberService {
-
+public class MemberServiceMapperImpl implements MemberService{
+	
 	SqlSession session;
 	
 	@Autowired
 	public MemberServiceMapperImpl(SqlSession session) {
 		this.session = session;
 	}
-
+	
 	@Override
+	//@Transactional
 	public int memberInsert(MemberDto dto) throws Exception {
+		// TODO Auto-generated method stub
+		
+		// tx 테스트용
+		//session.getMapper(MemberRepository.class).memberInsert(dto);
 		return session.getMapper(MemberRepository.class).memberInsert(dto);
 	}
 
@@ -35,39 +41,40 @@ public class MemberServiceMapperImpl implements MemberService {
 
 	@Override
 	public List<MemberDto> memberList(Map<String, Integer> map) throws Exception {
+		// TODO Auto-generated method stub
 		return session.getMapper(MemberRepository.class).memberList(map);
 	}
 
 	@Override
 	public MemberDto memberView(MemberDto dto) throws Exception {
+		
 		return session.getMapper(MemberRepository.class).memberView(dto);
 	}
 
 	@Override
 	public int memberUpdate(MemberDto dto) throws Exception {
+		// TODO Auto-generated method stub
 		return session.getMapper(MemberRepository.class).memberUpdate(dto);
 	}
 
 	@Override
 	public boolean login(MemberDto dto) throws Exception {
 		MemberDto login = session.getMapper(MemberRepository.class).login(dto);
-		System.out.println(login);
-		if(login != null) {
-			return true;
-		} else {
-			return false;			
-		}
+		if(login != null) return true;
+		else return false;
+		
 	}
 
 	@Override
 	public int memberDelete(MemberDto dto) throws Exception {
+		// TODO Auto-generated method stub
 		return session.getMapper(MemberRepository.class).memberDelete(dto);
 	}
 
 	@Override
 	public boolean memberDeletes(String[] ids) throws Exception {
-		MemberDto dto = new MemberDto();
-		for(String id : ids) {
+		MemberDto dto = new MemberDto(); 
+		for (String id : ids) {
 			dto.setId(id);
 			session.getMapper(MemberRepository.class).memberDelete(dto);
 		}
@@ -87,10 +94,10 @@ public class MemberServiceMapperImpl implements MemberService {
 		pageNavigation.makeNavigator();
 		return pageNavigation;
 	}
-
+	
 	public int memberCnt() throws Exception {
-		String ns = "edu.ssafy.spring.reporitory.MemberRepository.";
-		int cnt = session.selectOne(ns +"memberCnt");
+		int cnt = session.selectOne("edu.ssafy.spring.reporitory.MemberRepository.memberCnt");
 		return cnt;
 	}
+
 }
